@@ -6,6 +6,7 @@ import com.qa.opencart.pages.HomePage;
 import com.qa.opencart.pages.LoginPage;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+
 import java.io.FileNotFoundException;
 import java.util.Properties;
 
@@ -25,13 +26,6 @@ public class BaseTest {
     }
     @AfterTest
     public void tearDown() {
-        if (page != null) {
-            page.context().close();                // Close context
-            page.context().browser().close();      // Close browser
-        }
-        // Avoid ThreadLocal memory leaks
-        PlaywrightFactory.getBrowser().close();
-        PlaywrightFactory.getBrowserContext().close();
-        PlaywrightFactory.getPage().close();
+        PlaywrightFactory.cleanUp();
     }
 }

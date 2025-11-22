@@ -26,16 +26,10 @@ public class ExtentReportListener implements ITestListener {
 
 
     private static ExtentReports init() {
-
-        Path path = Paths.get(OUTPUT_FOLDER);
-        // if directory exists?
-        if (!Files.exists(path)) {
-            try {
-                Files.createDirectories(path);
-            } catch (IOException e) {
-                // fail to create directory
-                e.printStackTrace();
-            }
+        try {
+            Files.createDirectories(Paths.get(OUTPUT_FOLDER));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         extentReports = new ExtentReports();
@@ -47,9 +41,8 @@ public class ExtentReportListener implements ITestListener {
         extentReports.setSystemInfo("Build#", "1.1");
         extentReports.setSystemInfo("Team", "OMS");
         extentReports.setSystemInfo("Customer Name", "NAL");
-
-        //extentReports.setSystemInfo("ENV NAME", System.getProperty("env"));
-
+        extentReports.setSystemInfo("Browser", System.getProperty("browser", "Chrome"));
+        extentReports.setSystemInfo("Execution Environment", System.getProperty("env", "QA"));
         return extentReports;
     }
 
@@ -116,6 +109,4 @@ public class ExtentReportListener implements ITestListener {
         calendar.setTimeInMillis(millis);
         return calendar.getTime();
     }
-
-
 }

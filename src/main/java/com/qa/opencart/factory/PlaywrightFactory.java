@@ -94,8 +94,25 @@ public class PlaywrightFactory {
         String path = System.getProperty("user.dir") + "/screenshot/" + System.currentTimeMillis() + ".png";
         //getPage().screenshot(new Page.ScreenshotOptions().setPath(Paths.get(path)).setFullPage(true));
         byte[] buffer = getPage().screenshot(new Page.ScreenshotOptions().setPath(Paths.get(path)).setFullPage(true));
-        String base64Path = Base64.getEncoder().encodeToString(buffer);
+        //String base64Path = Base64.getEncoder().encodeToString(buffer);
         //return base64Path;
         return Base64.getEncoder().encodeToString(buffer);
+    }
+
+    public static void cleanUp() {
+        try {
+            if (getPage() != null) getPage().close();
+            if (getBrowserContext() != null) getBrowserContext().close();
+            if (getBrowser() != null) getBrowser().close();
+            if (getPlaywright() != null) getPlaywright().close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Prevent ThreadLocal memory leaks
+            tlPage.remove();
+            tlBrowserContext.remove();
+            tlBrowser.remove();
+            tlPlaywright.remove();
+        }
     }
 }
